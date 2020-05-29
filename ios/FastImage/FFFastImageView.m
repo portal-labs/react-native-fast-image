@@ -18,6 +18,7 @@
     self = [super init];
     self.resizeMode = RCTResizeModeCover;
     self.clipsToBounds = YES;
+    _blurRadius = 0.0;
     return self;
 }
 
@@ -98,6 +99,13 @@
 - (void)setSource:(FFFastImageSource *)source {
     if (_source != source) {
         _source = source;
+        _needsReload = YES;
+    }
+}
+
+- (void)setBlurRadius:(float)blurRadius {
+    if (_blurRadius != blurRadius) {
+        _blurRadius = blurRadius;
         _needsReload = YES;
     }
 }
@@ -186,9 +194,14 @@
 
 - (void)downloadImage:(FFFastImageSource *) source options:(SDWebImageOptions) options {
     __weak typeof(self) weakSelf = self; // Always use a weak reference to self in blocks
+
+    // Add blur transformer if a blur radius is set
+    SDWebImageContext *context = (_blurRadius > 0) ? @{SDWebImageContextImageTransformer: [SDImageBlurTransformer transformerWithRadius:_blurRadius]} : @{};
+
     [self sd_setImageWithURL:_source.url
             placeholderImage:nil
                      options:options
+                     context:context
                     progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
                         if (weakSelf.onFastImageProgress) {
                             weakSelf.onFastImageProgress(@{

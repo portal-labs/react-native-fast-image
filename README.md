@@ -194,6 +194,12 @@ In this case the image will still be styled and laid out the same way as `FastIm
 
 If supplied, changes the color of all the non-transparent pixels to the given color.
 
+---
+
+### `blurRadius?: number`
+
+If supplied, blurs the image with a gaussian blur with the supplied radius.
+
 ## Static Methods
 
 ### `FastImage.preload: (source[]) => void`
