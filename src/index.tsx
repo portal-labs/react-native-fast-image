@@ -95,6 +95,8 @@ export interface FastImageProps {
 
     onLoadEnd?(): void
 
+    onTransitionEnd?(): void
+
     /**
      * onLayout function
      *
@@ -139,6 +141,7 @@ function FastImageBase({
     onLoad,
     onError,
     onLoadEnd,
+    onTransitionEnd,
     style,
     fallback,
     children,
@@ -180,6 +183,7 @@ function FastImageBase({
                 onFastImageLoad={onLoad}
                 onFastImageError={onError}
                 onFastImageLoadEnd={onLoadEnd}
+                onFastImageTransitionEnd={onTransitionEnd}
                 resizeMode={resizeMode}
                 blurRadius={blurRadius}
                 transitionIn={transitionIn}

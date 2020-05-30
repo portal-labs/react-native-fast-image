@@ -63,10 +63,10 @@
     }
 }
 
-- (void)setOnFastImageTransitionInEnd:(RCTDirectEventBlock)onFastImageTransitionInEnd {
-    _onFastImageTransitionInEnd = onFastImageTransitionInEnd;
-    if (self.hasTransitioned && onFastImageTransitionInEnd) {
-        onFastImageTransitionInEnd(@{});
+- (void)setOnFastImageTransitionEnd:(RCTDirectEventBlock)onFastImageTransitionEnd {
+    _onFastImageTransitionEnd = onFastImageTransitionEnd;
+    if (self.hasTransitioned && onFastImageTransitionEnd) {
+        onFastImageTransitionEnd(@{});
     }
 }
 
@@ -245,6 +245,7 @@
                             [weakSelf sendOnLoad:image];
                             if (weakSelf.onFastImageLoadEnd) {
                                 weakSelf.onFastImageLoadEnd(@{@"cache": @(cacheType != SDImageCacheTypeNone)});
+                                weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(false));
                             }
                             if (weakSelf.transitionIn && cacheType == SDImageCacheTypeNone) {
                                 [UIView animateWithDuration:0.4
@@ -253,8 +254,8 @@
                                                  animations:^{ weakSelf.alpha = 1.0; }
                                                  completion:^(BOOL finished){
                                     weakSelf.hasTransitioned = YES;
-                                    if (weakSelf.onFastImageTransitionInEnd) {
-                                        weakSelf.onFastImageTransitionInEnd(@{});
+                                    if (weakSelf.onFastImageTransitionEnd) {
+                                        weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(true));
                                     }
                                 }];
                             } else {
