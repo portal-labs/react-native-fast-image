@@ -245,7 +245,7 @@
                             [weakSelf sendOnLoad:image];
                             if (weakSelf.onFastImageLoadEnd) {
                                 weakSelf.onFastImageLoadEnd(@{@"cache": @(cacheType != SDImageCacheTypeNone)});
-                                weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(false));
+                                weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(false)});
                             }
                             if (weakSelf.transitionIn && cacheType == SDImageCacheTypeNone) {
                                 [UIView animateWithDuration:0.4
@@ -255,7 +255,7 @@
                                                  completion:^(BOOL finished){
                                     weakSelf.hasTransitioned = YES;
                                     if (weakSelf.onFastImageTransitionEnd) {
-                                        weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(true));
+                                        weakSelf.onFastImageTransitionEnd(@{@"transitioned": @(true)});
                                     }
                                 }];
                             } else {
