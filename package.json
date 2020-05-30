@@ -1,7 +1,7 @@
 {
     "name": "@portal-labs/react-native-fast-image",
-    "version": "8.1.5",
-    "description": "🚩 FastImage, performant React Native image component.",
+    "version": "8.1.10",
+    "description": "🚩 FastImage, performant React Native image component (based on upstream 8.1.5).",
     "keywords": [
         "cache",
         "cached",

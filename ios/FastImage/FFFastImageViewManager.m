@@ -13,6 +13,7 @@ RCT_EXPORT_MODULE(FastImageView)
 
 RCT_EXPORT_VIEW_PROPERTY(source, FFFastImageSource)
 RCT_EXPORT_VIEW_PROPERTY(blurRadius, float)
+RCT_EXPORT_VIEW_PROPERTY(transitionIn, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(resizeMode, RCTResizeMode)
 RCT_EXPORT_VIEW_PROPERTY(onFastImageLoadStart, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onFastImageProgress, RCTDirectEventBlock)

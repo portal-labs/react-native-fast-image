@@ -4,6 +4,7 @@
 
 @property (nonatomic, assign) BOOL hasSentOnLoadStart;
 @property (nonatomic, assign) BOOL hasCompleted;
+@property (nonatomic, assign) BOOL hasTransitioned;
 @property (nonatomic, assign) BOOL hasErrored;
 // Whether the latest change of props requires the image to be reloaded
 @property (nonatomic, assign) BOOL needsReload;
@@ -19,6 +20,7 @@
     self.resizeMode = RCTResizeModeCover;
     self.clipsToBounds = YES;
     _blurRadius = 0.0;
+    _transitionIn = false;
     return self;
 }
 
@@ -58,6 +60,13 @@
     } else {
         _onFastImageLoadStart = onFastImageLoadStart;
         self.hasSentOnLoadStart = NO;
+    }
+}
+
+- (void)setOnFastImageTransitionInEnd:(RCTDirectEventBlock)onFastImageTransitionInEnd {
+    _onFastImageTransitionInEnd = onFastImageTransitionInEnd;
+    if (self.hasTransitioned && onFastImageTransitionInEnd) {
+        onFastImageTransitionInEnd(@{});
     }
 }
 
@@ -107,6 +116,15 @@
     if (_blurRadius != blurRadius) {
         _blurRadius = blurRadius;
         _needsReload = YES;
+    }
+}
+
+- (void)setTransitionIn:(BOOL)transitionIn {
+    if (_transitionIn != transitionIn) {
+        _transitionIn = transitionIn;
+        if (!_hasTransitioned) {
+            self.alpha = transitionIn ? 0 : 1;
+        }
     }
 }
 
@@ -219,13 +237,28 @@
                                     weakSelf.onFastImageError(@{});
                                 }
                                 if (weakSelf.onFastImageLoadEnd) {
-                                    weakSelf.onFastImageLoadEnd(@{});
+                                    weakSelf.onFastImageLoadEnd(@{@"cache": @(cacheType != SDImageCacheTypeNone)});
                                 }
+                                weakSelf.alpha = 1.0;
                         } else {
                             weakSelf.hasCompleted = YES;
                             [weakSelf sendOnLoad:image];
                             if (weakSelf.onFastImageLoadEnd) {
-                                weakSelf.onFastImageLoadEnd(@{});
+                                weakSelf.onFastImageLoadEnd(@{@"cache": @(cacheType != SDImageCacheTypeNone)});
+                            }
+                            if (weakSelf.transitionIn && cacheType == SDImageCacheTypeNone) {
+                                [UIView animateWithDuration:0.4
+                                                      delay:0.0
+                                                    options:UIViewAnimationOptionCurveEaseOut
+                                                 animations:^{ weakSelf.alpha = 1.0; }
+                                                 completion:^(BOOL finished){
+                                    weakSelf.hasTransitioned = YES;
+                                    if (weakSelf.onFastImageTransitionInEnd) {
+                                        weakSelf.onFastImageTransitionInEnd(@{});
+                                    }
+                                }];
+                            } else {
+                                weakSelf.alpha = 1.0;
                             }
                         }
                     }];

@@ -81,6 +81,7 @@ export interface ImageStyle extends FlexStyle, TransformsStyle, ShadowStyleIOS {
 export interface FastImageProps {
     source: Source | number
     blurRadius?: number
+    transitionIn?: boolean
     resizeMode?: ResizeMode
     fallback?: boolean
 
@@ -131,6 +132,7 @@ export interface FastImageProps {
 function FastImageBase({
     source,
     blurRadius = 0,
+    transitionIn = false,
     tintColor,
     onLoadStart,
     onProgress,
@@ -180,6 +182,7 @@ function FastImageBase({
                 onFastImageLoadEnd={onLoadEnd}
                 resizeMode={resizeMode}
                 blurRadius={blurRadius}
+                transitionIn={transitionIn}
             />
             {children}
         </View>
